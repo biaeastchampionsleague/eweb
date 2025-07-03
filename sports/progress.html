@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixture Score Progression</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .fixture {
+            margin-bottom: 20px;
+        }
+
+        .fixture-name {
+            font-weight: bold;
+        }
+
+        .score-container {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .score-input {
+            width: 50px;
+            margin: 0 10px;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: #ddd;
+            margin-top: 10px;
+        }
+
+        .progress {
+            height: 10px;
+            background-color: #4caf50;
+            width: 0%;
+        }
+
+        .stats {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .score-progression {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+
+<h1 style="text-align: center;">BIA EAST CHAMPIONS LEAGUE     : VENUE: CAMP JUNCTION</h1>
+<h2 style="text-align: center;">18TH - 24TH AUGUST,2025</h2>
+<h4 class="score-progression">SCORE PROGRESSION SHEET</h4>
+
+<div id="fixtures-container"></div>
+
+<script>
+   const fixtures = [
+    "CAMP 15 PRIM vs KOJO ARMAH (U-13 BOYS)",
+    "E/A JHS vs CAMP 15 JHS A (U-15 BOYS)",
+    "C J JHS ‘B’ vs ANGEL JHS (U-15 GIRLS)",
+    "ADIENKYEE PRIM vs C J PRIM A (U-13 GIRLS)",
+    "CJ PRIM B vs ADIENKYEE PRIM (U-13 BOYS)",
+    "ALMIGHTY PRIM vs C 15 PRIM ‘A’ (U-13 BOYS)",
+    "ANGEL JHS vs C 15 JHS ‘B’ (U-15 GIRLS)",
+    "JHS ‘A’ vs E/A JHS (U-15 GIRLS)",
+    "C15 JHS ‘A’ vs C15 JHS ‘B’ (U-15 BOYS)",
+    "C15 PRIM ‘A’ vs CJ PRIM ‘A’ (U-13 BOYS)",
+    "KOJO ARMAH vs ANGEL PRIM (U-13 BOYS)",
+    "OWONTA PRIM vs E/A PRIM (U-13 GIRLS)",
+    "CJ JHS ‘A’ vs E/A JHS (U-15 BOYS)",
+    "E/A PRIM ‘A’ vs KOJO ARMAH (U-13 BOYS)",
+    "C15 PRIM vs ADIENKYEE (U-13 GIRLS)",
+    "CJ PRIM ‘B’ vs OWONTA PRIM (U-13 BOYS)",
+    "CJ PRIM ‘A’ vs ALMIGHTY PRIM (U-13 BOYS)",
+    "CJ JHS ‘B’ vs C15 JHS ‘A’ (U-15 BOYS)",
+    "OWONTA PRIM vs E/A PRIM (U-13 GIRLS)",
+    "CJ PRIM ‘A’ vs C15 PRIM (U-13 GIRLS)",
+    "E/A JHS vs C15 JHS ‘A’ (U-15 GIRLS)",
+    "E/A PRIM ‘A’ vs ANGEL PRIM (U-13 BOYS)",
+    "ADIENKYEE PRIM vs OWONTA PRIM (U-13 BOYS)",
+    "E/A PRIM vs C15 PRIM (U-13 GIRLS)",
+    "E/A JHS vs C15 JHS ‘B’ (U-15 BOYS)",
+    "E/A PRIM vs ADIENKYEE (U-13 GIRLS)",
+    "C15 JHS ‘A’ vs CJ JHS ‘A’ (U-15 GIRLS)",
+    "E/A PRIM ‘B’ vs CJ PRIM ‘B’ (U-13 BOYS)",
+    "CJ PRIM ‘A’ vs ALMIGHTY PRIM (U-13 BOYS)",
+    "ADIENKYEE PRIM vs OWONTA (U-13 GIRLS)",
+    "CJ JHS ‘A’ vs C15 JHS ‘A’ (U-15 BOYS)",
+    "CJ PRIM ‘A’ vs E/A PRIM (U-13 GIRLS)",
+    "CJ JHS ‘A’ vs C15 JHS ‘B’ (U-15 BOYS)",
+    "OWONTA PRIM vs C15 PRIM (U-13 GIRLS)",
+    "OWONTA PRIM vs CJ PRIM ‘B’ (U-13 BOYS)",
+    "C15 PRIM ‘B’ vs E/A PRIM ‘A’ (U-13 BOYS)",
+    "E/A JHS vs CJ JHS ‘A’ (U-15 BOYS)" 
+    ];
+
+    function saveScores() {
+        const scores = [];
+        document.querySelectorAll('.fixture').forEach((fixture) => {
+            const teamAScore = fixture.querySelector('input[data-team="A"]').value || "0";
+            const teamBScore = fixture.querySelector('input[data-team="B"]').value || "0";
+            scores.push({ teamA: teamAScore, teamB: teamBScore });
+        });
+        localStorage.setItem('fixtureScores', JSON.stringify(scores));
+    }
+
+    function loadScores() {
+        const savedScores = JSON.parse(localStorage.getItem('fixtureScores')) || [];
+        document.querySelectorAll('.fixture').forEach((fixture, index) => {
+            const teamAScoreInput = fixture.querySelector('input[data-team="A"]');
+            const teamBScoreInput = fixture.querySelector('input[data-team="B"]');
+
+            teamAScoreInput.value = savedScores[index]?.teamA || "0";
+            teamBScoreInput.value = savedScores[index]?.teamB || "0";
+
+            updateProgressBar({ target: teamAScoreInput });
+        });
+    }
+
+    function updateProgressBar(event) {
+        const parent = event.target.closest('.fixture');
+        const teamAScoreInput = parent.querySelector('input[data-team="A"]');
+        const teamBScoreInput = parent.querySelector('input[data-team="B"]');
+        const progressBar = parent.querySelector('.progress');
+        const statsContainer = parent.querySelector('.stats');
+        const pointsElement = statsContainer.querySelector('.points');
+        const goalsElement = statsContainer.querySelector('.goals');
+        const goalDifferenceElement = statsContainer.querySelector('.goal-difference');
+
+        const scoreA = parseInt(teamAScoreInput.value) || 0;
+        const scoreB = parseInt(teamBScoreInput.value) || 0;
+
+        const totalScore = scoreA + scoreB;
+        const progress = totalScore > 0 ? (scoreA / totalScore) * 100 : 0;
+
+       progressBar.style.width = `${progress}%`;
+
+
+        let pointsA = 0, pointsB = 0;
+        if (scoreA > scoreB) pointsA = 3;
+        else if (scoreA < scoreB) pointsB = 3;
+        else if (scoreA !== 0 || scoreB !== 0) pointsA = pointsB = 1;
+
+        pointsElement.innerText = pointsA + ' : ' + pointsB;
+        goalsElement.innerText = scoreA + ' : ' + scoreB;
+        goalDifferenceElement.innerText = (scoreA - scoreB) + ' : ' + (scoreB - scoreA);
+
+        saveScores();
+    }
+
+    function createFixtures() {
+        const container = document.getElementById('fixtures-container');
+        fixtures.forEach(match => {
+            const fixtureElement = document.createElement('div');
+            fixtureElement.classList.add('fixture');
+
+            fixtureElement.innerHTML = `
+                <div class="fixture-name">${match}</div>
+                <div class="score-container">
+                    <input class="score-input" type="number" data-team="A" value="0">
+                    <input class="score-input" type="number" data-team="B" value="0">
+                </div>
+                <div class="progress-bar"><div class="progress"></div></div>
+                <div class="stats">
+                    <div>Points: <span class="points">0:0</span></div>
+                    <div>Goals: <span class="goals">0:0</span></div>
+                    <div>Goal Difference: <span class="goal-difference">0:0</span></div>
+                </div>
+            `;
+
+            container.appendChild(fixtureElement);
+            fixtureElement.querySelectorAll('.score-input').forEach(input => input.addEventListener('input', updateProgressBar));
+        });
+
+        loadScores();
+    }
+
+    createFixtures();
+</script>
+
+</body>
+</html>

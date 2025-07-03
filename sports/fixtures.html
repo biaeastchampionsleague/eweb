@@ -1,0 +1,410 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Football Standings</title>
+    <style>
+        table { border-collapse: collapse; width: 50%; }
+        th, td { border: 1px solid black; padding: 10px; text-align: center; }
+        input { width: 50px; }
+    </style>
+    <script>
+        function updateTable() {
+            let teams = document.querySelectorAll("tbody tr");
+            let standings = [];
+            
+            teams.forEach((row, index) => {
+                let teamName = row.querySelector(".team").textContent;
+                let wins = parseInt(row.querySelector(".wins").value) || 0;
+                let penaltyWins = parseInt(row.querySelector(".penaltyWins").value) || 0;
+                let PenaltyLoses = parseInt(row.querySelector(".PenaltyLoses").value) || 0;
+                let goalsScored = parseInt(row.querySelector(".goalsScored").value) || 0;
+                let goalsConceded = parseInt(row.querySelector(".goalsConceded").value) || 0;
+                
+                let points = (wins * 3) + (penaltyWins * 2) + (PenaltyLoses * 1);
+                let goalDifference = goalsScored - goalsConceded;
+                
+                row.querySelector(".points").textContent = points;
+                row.querySelector(".goalDifference").textContent = goalDifference;
+                
+                standings.push({ teamName, wins, penaltyWins, PenaltyLoses, goalsScored, goalsConceded, points, goalDifference });
+            });
+            
+            localStorage.setItem("footballStandings", JSON.stringify(standings));
+        }
+        
+        function loadTable() {
+            let storedData = localStorage.getItem("footballStandings");
+            if (storedData) {
+                let standings = JSON.parse(storedData);
+                let teams = document.querySelectorAll("tbody tr");
+                
+                teams.forEach((row, index) => {
+                    if (standings[index]) {
+                        row.querySelector(".wins").value = standings[index].wins;
+                        row.querySelector(".penaltyWins").value = standings[index].penaltyWins;
+                        row.querySelector(".PenaltyLoses").value = standings[index].PenaltyLoses;
+                        row.querySelector(".goalsScored").value = standings[index].goalsScored;
+                        row.querySelector(".goalsConceded").value = standings[index].goalsConceded;
+                        row.querySelector(".points").textContent = standings[index].points;
+                        row.querySelector(".goalDifference").textContent = standings[index].goalDifference;
+                    }
+                });
+            }
+        }
+        
+        window.onload = loadTable;
+    </script>
+</head>
+<body>
+   
+            </tr>
+        </thead>
+        <tbody>
+            
+            
+            
+        </tbody>
+    </table>
+
+
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Standings</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        table { border-collapse: collapse; width: 80%; margin: auto; }
+        th, td { border: 1px solid black; padding: 10px; text-align: center; }
+        input { width: 50px; }
+        button { margin-top: 10px; padding: 10px; cursor: pointer; display: block; margin: auto; }
+    </style>
+</head>
+<body>
+    
+    <h2 style="text-align: center;">BIA EAST CHAMPIONS LEAGUE  TABLE</h2>
+    <table id="standingsTable">
+        <thead>
+            <tr>
+                <th>Team</th>
+                <th>Wins</th>
+                <th>Penalty Wins</th>
+                <th>Penalty Loses</th>
+                <th>Goals Scored</th>
+                <th>Goals Conceded</th>
+                <th>Points</th>
+                <th>Goal Difference</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+
+<tr>
+    <td class="team">CAMP 15 JHS A U15 BOYS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">CAMP 15 JHS B U15 BOYS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">CAMP JUNCTION JHS A U15 BOYS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">CAMP JUNCTION JHS B U15 BOYS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">E/A JHS U15 BOYS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<!-- Add other categories (U15 Girls, U13 Boys, U13 Girls) in the same format -->
+<tr>
+    <td class="team">ANGEL PRIM U13 BOYS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">KOJO ARMAH U13 BOYS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">ADIENKYEE PRIM U13 BOYS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">OWUNTA PRIM U13 BOYS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">E/A PRIM U13 BOYS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">CAMP JUNCTION A U13 BOYS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">CAMP JUNCTION B U13 BOYS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">CAMP 15 A U13 BOYS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">CAMP 15 B U13 BOYS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">ALMIGHTY PRIM U13 BOYS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">CAMP 15 JHS A U15 GIRLS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">CAMP 15 JHS B U15 GIRLS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">CAMP JUNCTION JHS A U15 GIRLS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">CAMP JUNCTION JHS B U15 GIRLS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">E/A JHS U15 GIRLS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">ANGEL JHS U15 GIRLS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">OWUNTA U13 GIRLS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">E/A U13 GIRLS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">CAMP JUNCTION PRIMARY A U13 GIRLS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">CAMP 15 PRIMARY U13 GIRLS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+<tr>
+    <td class="team">ADIENKYEE PRIMARY U13 GIRLS</td>
+    <td><input type="number" class="wins" oninput="updateTable()"></td>
+    <td><input type="number" class="penaltyWins" oninput="updateTable()"></td>
+    <td><input type="number" class="PenaltyLoses" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsScored" oninput="updateTable()"></td>
+    <td><input type="number" class="goalsConceded" oninput="updateTable()"></td>
+    <td class="points">0</td>
+    <td class="goalDifference">0</td>
+</tr>
+
+        </tbody>
+    </table>
+
+    <button onclick="downloadPDF()">Download as PDF</button>
+
+    <script>
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            let doc = new jsPDF('l', 'mm', 'a4'); // A4 size
+
+            let element = document.getElementById("standingsTable");
+
+            html2canvas(element).then(canvas => {
+                let imgData = canvas.toDataURL("image/png");
+                let imgWidth = 260; // Adjust width
+                let imgHeight = (canvas.height * imgWidth) / canvas.width; // Keep aspect ratio
+
+                doc.addImage(imgData, 'PNG', 10, 2, imgWidth, imgHeight);
+                doc.save("Football_Standings.pdf");
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+<br>
+<br>
+
+<style>
+    .score-progression { color: blue; }
+</style>
+<h4 class="score-progression" style="text-align: center;">© 2024 Sir. Edward. All Rights Reserved. Contact: 0244888885 / 0200100005</h4>
+
+
+
+
+
+
+
+
+    
