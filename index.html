@@ -669,7 +669,7 @@
     <li><a href="#contact">Contact</a></li>
     <li>
       <a href="sports/index.html" class="px-4 py-2 bg-yellow-500 text-gray-900 rounded-lg font-semibold hover:bg-yellow-400 transition">
-        <i class="fas fa-futbol mr-2"></i>Sports
+        <i class=" mr-2"></i>Sports
       </a>
     </li>
   </ul>
@@ -808,8 +808,8 @@
                         <div class="testimonial-author">
                             <div class="author-image"></div>
                             <div>
-                                <h4>Jennifer Kim</h4>
-                                <p>Technology Coordinator, Oakwood School</p>
+                                <h4>George Badu</h4>
+                                <p>Technology Coordinator, Camp Junction Circuit Supervisor</p>
                             </div>
                         </div>
                     </div>
@@ -913,7 +913,389 @@
     </div>
 </section>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDWEBAPPS Features</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e7f1 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: #3498db;
+            border-radius: 2px;
+        }
+        
+        .section-title p {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .menu-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .menu-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .menu-container h1 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            text-align: center;
+        }
+        
+        .menu-container h3 {
+            font-size: 1.4rem;
+            color: #3498db;
+            margin: 25px 0 15px;
+            text-align: center;
+        }
+        
+        .feature-group {
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .feature-group h2 {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-group h2 i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+        
+        .feature-group ul {
+            list-style-type: none;
+            padding-left: 10px;
+        }
+        
+        .feature-group li {
+            padding: 8px 0;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .feature-group li::before {
+            content: "•";
+            color: #3498db;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .sub-menu {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .feature-group .nested-list {
+            margin-left: 20px;
+            margin-top: 10px;
+            padding-left: 15px;
+            border-left: 2px dashed #3498db;
+        }
+        
+        .feature-highlight {
+            background: linear-gradient(to right, #e3f2fd, #bbdefb);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .feature-highlight h3 {
+            font-size: 1.2rem;
+            color: #0d47a1;
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .menu-container {
+                padding: 20px;
+            }
+            
+            .section-title h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .feature-group {
+                padding: 15px;
+            }
+            
+            .menu-container h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Features Section -->
+    <section id="features">
+        <div class="container">
+            <div class="section-title">
+                <h1>EDWEBAPPS Features</h1>
+                <p>Comprehensive solutions for educational institutions and welfare management</p>
+            </div>
 
+            <div class="features-grid">
+                <!-- School Management System Features -->
+                <div class="menu-container">
+                    <h1>School Management System</h1>
+                    
+                    <div class="feature-group">
+                        <h2><i class="fas fa-cog"></i> Settings</h2>
+                        <ul>
+                            <li>Change term and academic year</li>
+                            <li>Set reopen and vacation dates</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-group">
+                        <h2><i class="fas fa-users-cog"></i> User Management</h2>
+                        <ul>
+                            <li><span class="sub-menu">Register Teacher</span> (Enter teacher details)</li>
+                            <li><span class="sub-menu">Create User</span> (Create staff ID and password for new users)</li>
+                            <li><span class="sub-menu">Profile</span> (Upload profile picture, change password)</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-group">
+                        <h2><i class="fas fa-user-graduate"></i> Student Management</h2>
+                        <ul>
+                            <li><span class="sub-menu">New Admission</span> (Register new student)</li>
+                            <li><span class="sub-menu">Migrate Students</span> (Transfer students between classes)</li>
+                            <li><span class="sub-menu">Repeat Students</span> (Mark students for repetition)</li>
+                            <li><span class="sub-menu">Old Students</span> (View past student records)</li>
+                            <li><span class="sub-menu">Dropout Students</span> (Track exited students)</li>
+                            <li><span class="sub-menu">Duplicate Students</span> (Resolve duplicate entries)</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-group">
+                        <h2><i class="fas fa-money-bill-wave"></i> Finance</h2>
+                        <ul>
+                            <li>Prepare bill</li>
+                            <li>Print student bill</li>
+                            <li>Make payment</li>
+                            <li>Print receipt</li>
+                            <li>Payment list</li>
+                            <li>Arrears</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-group">
+                        <h2><i class="fas fa-clipboard-list"></i> Examinations & Assessments</h2>
+                        <ul>
+                            <li><span class="sub-menu">Mock Exams</span> (Enter mock scores in 100%)</li>
+                            <li><span class="sub-menu">End of Term Exams</span></li>
+                            <li><span class="sub-menu">Excel Reports</span>
+                                <ul class="nested-list">
+                                    <li>End of term assessment (broadsheet)</li>
+                                    <li>Import assessment (broadsheet)</li>
+                                    <li>Mid-term exams form</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-group">
+                        <h2><i class="fas fa-chart-bar"></i> Reports</h2>
+                        <ul>
+                            <li>Class enrollment list</li>
+                            <li>New admission list</li>
+                            <li>Generate report card</li>
+                            <li>Master score sheet</li>
+                            <li>Exam performance</li>
+                            <li>Mock performance</li>
+                            <li>House members</li>
+                            <li>Teachers/Staff (PDF)</li>
+                            <li>Enrollment summary</li>
+                            <li>Assessment form</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-group">
+                        <h2><i class="fas fa-calendar-check"></i> Attendance & Appraisal</h2>
+                        <ul>
+                            <li>Mark attendance</li>
+                            <li>Edit attendance</li>
+                            <li>Attendance report</li>
+                            <li>Attendance summary</li>
+                            <li>Student appraisal</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-group">
+                        <h2><i class="fas fa-laptop"></i> E-Learning & Certificates</h2>
+                        <ul>
+                            <li>View assignment</li>
+                            <li>Upload assignment</li>
+                            <li>Library upload</li>
+                            <li>Ebook</li>
+                            <li>Certificate</li>
+                            <li>Batch certificate</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-group">
+                        <h2><i class="fas fa-sms"></i> SMS Module</h2>
+                        <ul>
+                            <li>Bulk SMS</li>
+                            <li>Staff SMS</li>
+                            <li>Custom SMS</li>
+                            <li>Arrears SMS</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-group">
+                        <h2><i class="fas fa-tools"></i> Utilities</h2>
+                        <ul>
+                            <li>Help Videos</li>
+                            <li>Logout</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Welfare Management System Features -->
+                <div class="menu-container">
+                    <h1>Welfare Management System</h1>
+                    
+                    <div class="feature-group">
+                        <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+                        <ul>
+                            <li>View overview of member statistics and welfare finances</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-group">
+                        <h2><i class="fas fa-users-cog"></i> User Management</h2>
+                        <ul>
+                            <li><span class="sub-menu">Create User</span> (Register new system users with roles)</li>
+                            <li><span class="sub-menu">Assign Role</span> (Give users permission levels like Admin, Welfare Officer, Viewer)</li>
+                            <li><span class="sub-menu">User Permissions</span> (Control access to different modules)</li>
+                            <li><span class="sub-menu">Profile</span> (Update profile info and change password)</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-group">
+                        <h2><i class="fas fa-user-friends"></i> Member Management</h2>
+                        <ul>
+                            <li><span class="sub-menu">Register Member</span> (Add new welfare members)</li>
+                            <li><span class="sub-menu">View Members</span> (View and manage all registered members)</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-group">
+                        <h2><i class="fas fa-money-bill-wave"></i> Financial Management</h2>
+                        <ul>
+                            <li><span class="sub-menu">Payments</span> (Record and monitor member contributions)</li>
+                            <li><span class="sub-menu">Payment List</span> (View payment history of all members)</li>
+                            <li><span class="sub-menu">Expenses</span> (Log welfare-related expenditures)</li>
+                            <li><span class="sub-menu">Prepare Bill</span> (Generate payment bills for members)</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-group">
+                        <h2><i class="fas fa-chart-line"></i> Reports</h2>
+                        <ul>
+                            <li><span class="sub-menu">Yearly Report</span> (Summarized financial overview per year)</li>
+                            <li><span class="sub-menu">Financial Statement</span> (Detailed breakdown of income and expenses)</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-group">
+                        <h2><i class="fas fa-tools"></i> Utilities</h2>
+                        <ul>
+                            <li>System configuration options</li>
+                            <li>Backup and restore functionality</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="feature-highlight">
+                        <h3>Key Benefits</h3>
+                        <p>Streamline welfare operations, track finances efficiently, and enhance member engagement with our comprehensive welfare management solution.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
   <!-- Contact Section -->
 <section class="contact" id="contact">
   <div class="container">
