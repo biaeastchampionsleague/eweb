@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #4e73df;
+            --secondary: #858796;
+            --success: #1cc88a;
+            --info: #36b9cc;
+            --warning: #f6c23e;
+            --danger: #e74a3b;
+            --light: #f8f9fc;
+            --dark: #5a5c69;
+            --sidebar-bg: #3c4c73;
+            --sidebar-hover: #2c3a5e;
+            --card-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f9;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background: var(--sidebar-bg);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            padding-top: 20px;
+            overflow-y: auto;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-250px);
+        }
+
+        .admin-profile {
+            text-align: center;
+            padding: 15px 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .admin-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .admin-profile p {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 20px 0;
+        }
+
+        .sidebar ul li {
+            margin: 5px 0;
+        }
+
+        .sidebar ul li a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            font-size: 15px;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar ul li a:hover,
+        .sidebar ul li a.active {
+            background-color: var(--sidebar-hover);
+            color: white;
+            border-left: 3px solid var(--info);
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Toggle Button */
+        .toggle-sidebar {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1100;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+        }
+
+        .toggle-sidebar:hover {
+            background: #2e59d9;
+            transform: rotate(90deg);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            flex-grow: 1;
+            padding: 20px;
+            transition: margin-left 0.3s ease-in-out;
+            min-height: 100vh;
+        }
+
+        .main-content.expanded {
+            margin-left: 0;
+        }
+
+        /* Header */
+        .dashboard-header {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .dashboard-header h1 {
+            font-size: 24px;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .dashboard-header p {
+            color: var(--secondary);
+            margin-bottom: 0;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-text {
+            text-align: right;
+        }
+
+        .user-text strong {
+            display: block;
+            font-size: 16px;
+        }
+
+        .user-text small {
+            font-size: 13px;
+            color: var(--secondary);
+        }
+
+        .user-img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+
+        /* Dashboard Cards */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border-left: 4px solid var(--primary);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 2rem rgba(58, 59, 69, 0.2);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            opacity: 0.1;
+            background: currentColor;
+        }
+
+        .card h3 {
+            font-size: 16px;
+            color: var(--secondary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card .icon {
+            font-size: 20px;
+        }
+
+        .card .stat {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .card .card-footer {
+            font-size: 14px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .card.green { border-left-color: var(--success); color: var(--success); }
+        .card.blue { border-left-color: var(--primary); color: var(--primary); }
+        .card.pink { border-left-color: #e83e8c; color: #e83e8c; }
+        .card.orange { border-left-color: var(--warning); color: var(--warning); }
+        .card.red { border-left-color: var(--danger); color: var(--danger); }
+        .card.purple { border-left-color: #6f42c1; color: #6f42c1; }
+        .card.teal { border-left-color: var(--info); color: var(--info); }
+
+        /* Charts Container */
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .chart-card h3 {
+            font-size: 18px;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+
+        /* Calendar */
+        .calendar-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+        }
+
+        .calendar-container h2 {
+            font-size: 20px;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .calendar-header {
+            text-align: center;
+            font-weight: 600;
+            padding: 10px 0;
+            color: var(--dark);
+        }
+
+        .calendar-day {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: var(--light);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .calendar-day:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .calendar-day.event {
+            background: rgba(78, 115, 223, 0.15);
+            position: relative;
+        }
+
+        .calendar-day.event::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            width: 5px;
+            height: 5px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .calendar-day.today {
+            background: var(--primary);
+            color: white;
+            font-weight: bold;
+        }
+
+        .calendar-day.empty {
+            background: transparent;
+            cursor: default;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-250px);
+            }
+            
+            .sidebar.hidden {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .user-info {
+                align-self: flex-end;
+            }
+            
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .calendar {
+                gap: 4px;
+            }
+            
+            .calendar-day {
+                height: 35px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-sidebar">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <nav class="sidebar">
+        <div class="admin-profile">
+            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80" alt="Admin" class="admin-img">
+            <p>EDWARD</p>
+            <p>0244888885</p>
+        </div>
+        
+        <ul>
+            <li><a href="#" class="active"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="#"><i class="fas fa-user-graduate"></i> Student Management</a></li>
+            <li><a href="#"><i class="fas fa-chalkboard-teacher"></i> Teachers Management</a></li>
+            <li><a href="#"><i class="fas fa-sack-dollar"></i> Finance</a></li>
+            <li><a href="#"><i class="fas fa-pen-to-square"></i> Assessment</a></li>
+            <li><a href="#"><i class="fas fa-chart-line"></i> Report</a></li>
+            <li><a href="#"><i class="fas fa-message"></i> SMS Module</a></li>
+            <li><a href="#"><i class="fas fa-user-check"></i> Appraisal & Attendance</a></li>
+            <li><a href="#"><i class="fas fa-laptop-code"></i> E-Learning & Certificates</a></li>
+            <li><a href="#"><i class="fas fa-file-excel"></i> Excel</a></li>
+            <li><a href="#"><i class="fas fa-users-gear"></i> User Management</a></li>
+            <li><a href="#"><i class="fas fa-code"></i> Developer</a></li>
+        </ul>
+    </nav>
+    
+    <div class="main-content">
+        <header class="dashboard-header">
+            <div>
+                <h1>Welcome to the School Management System</h1>
+                <p>Academic Year: <span style="color: var(--primary); font-weight: bold;">2023-2024</span></p>
+                <p>Term: <span style="color: var(--primary); font-weight: bold;">Second Term</span></p>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-text">
+                    <strong>CUDJOE EDWARD</strong>
+                    <small>Administrator</small>
+                </div>
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="User" class="user-img">
+            </div>
+        </header>
+        
+        <!-- Dashboard Cards -->
+        <div class="dashboard-cards">
+            <div class="card green">
+                <h3><i class="fas fa-users icon"></i> Total Students</h3>
+                <div class="stat">187</div>
+                <div class="card-footer">
+                    <i class="fas fa-arrow-up"></i> 12% since last month
+                </div>
+            </div>
+            
+            <div class="card blue">
+                <h3><i class="fas fa-male icon"></i> Male Students</h3>
+                <div class="stat">101</div>
+                <div class="card-footer">
+                    <i class="fas fa-arrow-up"></i> 8% since last month
+                </div>
+            </div>
+            
+            <div class="card pink">
+                <h3><i class="fas fa-female icon"></i> Female Students</h3>
+                <div class="stat">86</div>
+                <div class="card-footer">
+                    <i class="fas fa-arrow-up"></i> 15% since last month
+                </div>
+            </div>
+            
+            <div class="card orange">
+                <h3><i class="fas fa-chalkboard-teacher icon"></i> Total Teachers</h3>
+                <div class="stat">7</div>
+                <div class="card-footer">
+                    <i class="fas fa-arrow-right"></i> No change
+                </div>
+            </div>
+            
+            <div class="card red">
+                <h3><i class="fas fa-calendar-check icon"></i> Attendance Today</h3>
+                <div class="stat">92%</div>
+                <div class="card-footer">
+                    <i class="fas fa-check-circle"></i> 172 Present, 15 Absent
+                </div>
+            </div>
+            
+            <div class="card teal">
+                <h3><i class="fas fa-book icon"></i> Ebooks</h3>
+                <div class="stat">24</div>
+                <div class="card-footer">
+                    <i class="fas fa-plus-circle"></i> 3 new this week
+                </div>
+            </div>
+            
+            <div class="card purple">
+                <h3><i class="fas fa-tasks icon"></i> Assignments</h3>
+                <div class="stat">18</div>
+                <div class="card-footer">
+                    <i class="fas fa-check"></i> 12 submitted
+                </div>
+            </div>
+            
+            <div class="card blue">
+                <h3><i class="fas fa-dollar-sign icon"></i> Fees Collected</h3>
+                <div class="stat">GHS 12,450</div>
+                <div class="card-footer">
+                    <i class="fas fa-arrow-up"></i> 25% of target
+                </div>
+            </div>
+        </div>
+        
+        <!-- Charts -->
+        <div class="charts-container">
+            <div class="chart-card">
+                <h3>Enrollment Breakdown</h3>
+                <div class="chart-container">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <h3>Male vs Female Students</h3>
+                <div class="chart-container">
+                    <canvas id="pieChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <h3>Attendance Trend</h3>
+                <div class="chart-container">
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Calendar -->
+        <div class="calendar-container">
+            <h2>School Calendar</h2>
+            <div class="calendar">
+                <div class="calendar-header">Sun</div>
+                <div class="calendar-header">Mon</div>
+                <div class="calendar-header">Tue</div>
+                <div class="calendar-header">Wed</div>
+                <div class="calendar-header">Thu</div>
+                <div class="calendar-header">Fri</div>
+                <div class="calendar-header">Sat</div>
+                
+                <!-- Empty days for the first week -->
+                <div class="calendar-day empty"></div>
+                <div class="calendar-day empty"></div>
+                <div class="calendar-day empty"></div>
+                
+                <!-- Calendar days -->
+                <div class="calendar-day">1</div>
+                <div class="calendar-day">2</div>
+                <div class="calendar-day">3</div>
+                <div class="calendar-day">4</div>
+                
+                <div class="calendar-day">5</div>
+                <div class="calendar-day event">6</div>
+                <div class="calendar-day">7</div>
+                <div class="calendar-day">8</div>
+                <div class="calendar-day">9</div>
+                <div class="calendar-day">10</div>
+                <div class="calendar-day">11</div>
+                
+                <div class="calendar-day">12</div>
+                <div class="calendar-day">13</div>
+                <div class="calendar-day event">14</div>
+                <div class="calendar-day">15</div>
+                <div class="calendar-day">16</div>
+                <div class="calendar-day">17</div>
+                <div class="calendar-day">18</div>
+                
+                <div class="calendar-day">19</div>
+                <div class="calendar-day">20</div>
+                <div class="calendar-day">21</div>
+                <div class="calendar-day today">22</div>
+                <div class="calendar-day">23</div>
+                <div class="calendar-day event">24</div>
+                <div class="calendar-day">25</div>
+                
+                <div class="calendar-day">26</div>
+                <div class="calendar-day">27</div>
+                <div class="calendar-day">28</div>
+                <div class="calendar-day">29</div>
+                <div class="calendar-day">30</div>
+                <div class="calendar-day">31</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle sidebar
+        document.querySelector('.toggle-sidebar').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('hidden');
+            document.querySelector('.main-content').classList.toggle('expanded');
+        });
+        
+        // Initialize charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Bar Chart - Enrollment by Level
+            const barCtx = document.getElementById('barChart').getContext('2d');
+            new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Nursery', 'KG 1', 'KG 2', 'Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5', 'Class 6'],
+                    datasets: [{
+                        label: 'Students',
+                        data: [18, 22, 25, 20, 23, 19, 21, 24, 15],
+                        backgroundColor: '#4e73df',
+                        borderColor: '#2e59d9',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Pie Chart - Gender Distribution
+            const pieCtx = document.getElementById('pieChart').getContext('2d');
+            new Chart(pieCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Male Students', 'Female Students'],
+                    datasets: [{
+                        data: [101, 86],
+                        backgroundColor: ['#4e73df', '#e83e8c'],
+                        hoverBackgroundColor: ['#2e59d9', '#d81b60']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+            
+            // Line Chart - Attendance Trend
+            const lineCtx = document.getElementById('lineChart').getContext('2d');
+            new Chart(lineCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Attendance Rate',
+                        data: [88, 91, 90, 93, 94, 92],
+                        backgroundColor: 'rgba(28, 200, 138, 0.1)',
+                        borderColor: '#1cc88a',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            min: 80,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
