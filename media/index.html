@@ -241,30 +241,64 @@
   </header>
   
   <!-- Mobile Navigation -->
-  <div class="mobile-menu" id="mobileMenu">
-  <a href="index.html" class="px-4 py-2 bg-white bg-opacity-20 rounded-lg hover:bg-opacity-30 transition font-semibold">Home</a>
-  <a href="faith.html" class="px-4 py-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition">Services</a>
-  <a href="portfolio.html" class="px-4 py-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition">Portfolio</a>
-
-  <!-- About Us with Dropdown -->
-  <div class="relative group">
-    <button class="w-full text-left px-4 py-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition flex justify-between items-center">
-      About Us
-      <svg class="w-4 h-4 ml-2 transform group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-      </svg>
-    </button>
-    <div class="hidden group-hover:block bg-white bg-opacity-10 rounded-lg mt-1 ml-4">
-      <a href="about.html" class="block px-4 py-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition">Who We Are</a>
-      <a href="team.html" class="block px-4 py-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition">Our Team</a>
-      <a href="media.html" class="block px-4 py-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition">Media</a>
+ </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container header-container">
+      <div class="logo">
+        <h1>Edweb<span>Apps</span></h1>
+      </div>
+      <button class="mobile-menu-btn" id="menuBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+      <nav>
+        <ul id="navMenu">
+          <li><a href="index.html">Home</a></li>
+         
+         
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle px-4 py-2 bg-yellow-500 text-gray-900 rounded-lg font-semibold hover:bg-yellow-400 transition">
+              Services ▾
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="faith.html">Media Gallery</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
     </div>
-  </div>
+  </header>
 
-  <a href="contact.html" class="px-4 py-2 bg-yellow-500 text-gray-900 rounded-lg font-semibold hover:bg-yellow-400 transition">
-    <i class="fas fa-envelope mr-2"></i>Contact
-  </a>
-</div>
+  <!-- Add dropdown toggle script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const toggles = document.querySelectorAll('.dropdown-toggle');
+
+      toggles.forEach(toggle => {
+        toggle.addEventListener('click', function (e) {
+          e.preventDefault();
+          const parent = this.closest('.dropdown');
+
+          // Close all other dropdowns
+          document.querySelectorAll('.dropdown').forEach(drop => {
+            if (drop !== parent) drop.classList.remove('open');
+          });
+
+          // Toggle this dropdown
+          parent.classList.toggle('open');
+        });
+      });
+
+      // Close dropdowns on outside click
+      document.addEventListener('click', function (e) {
+        if (!e.target.closest('.dropdown')) {
+          document.querySelectorAll('.dropdown').forEach(drop => drop.classList.remove('open'));
+        }
+      });
+    });
+  </script>
 
 
   <!-- Hero Section -->
